@@ -1,14 +1,10 @@
-data "aws_caller_identity" "current" {}
-
-data "aws_region" "current" {}
-
 resource "aws_iam_role" "sagemaker_role" {
   name               = format("%s-sagemaker-role", var.cluster_name)
   path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.sagemaker_policy_document.json
+  assume_role_policy = data.aws_iam_policy_document.policy_assume.json
 }
 
-data "aws_iam_policy_document" "sagemaker_policy_document_assume" {
+data "aws_iam_policy_document" "policy_assume" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
@@ -18,22 +14,15 @@ data "aws_iam_policy_document" "sagemaker_policy_document_assume" {
   }
 }
 
-resource "aws_iam_policy" "sagemaker_policy" {
-  name        = format("%s-sagemaker-policy", var.cluster_name)
-  description = "Allow Sagemaker to create model"
-  policy      = data.aws_iam_policy_document.sagemaker_policy_document.json
+
+resource "aws_iam_policy" "sagemaker_permissions_policy" {
+  name        = "sagemaker_permissions"
+  description = "sagemaker_permissions"
+  policy      = data.aws_iam_policy_document.sagemaker_permissions_document.json
 }
 
-data "aws_iam_policy_document" "sagemaker_policy_document" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "sagemaker:*"
-    ]
-    resources = [
-      "*"
-    ]
-  }
+data "aws_iam_policy_document" "sagemaker_permissions_document" {
+
   statement {
     effect = "Allow"
     actions = [
@@ -49,3 +38,4 @@ data "aws_iam_policy_document" "sagemaker_policy_document" {
     "*"]
   }
 }
+

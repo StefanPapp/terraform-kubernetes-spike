@@ -15,6 +15,7 @@ resource "aws_subnet" "subnet1" {
   vpc_id            = aws_vpc.default.id
   cidr_block        = var.subnet_cidr_blocks[0]
   availability_zone = var.availability_zones[0]
+  map_public_ip_on_launch = var.public
   tags = {
     Name         = format("%s-subnet1", var.cluster_name)
     Purpose      = format("%s-k8s", var.cluster_name)
@@ -42,7 +43,7 @@ resource "aws_subnet" "subnet3" {
   vpc_id                  = aws_vpc.default.id
   cidr_block              = var.subnet_cidr_blocks[2]
   availability_zone       = var.availability_zones[2]
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = var.public
   tags = {
     Name         = format("%s-subnet3", var.cluster_name)
     Purpose      = format("%s-k8s", var.cluster_name)

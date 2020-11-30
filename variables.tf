@@ -18,10 +18,11 @@ variable "tag_creator" {
   description = "creator"
 }
 
-variable "run_date" {
-  type        = string
-  description = "date when script was run"
-}
+#variable "run_date" {
+#  type        = string
+#  description = "date when script was run"
+#  default = timestamp()
+#}
 
 variable "multiple_az" {
   default = false
@@ -30,6 +31,7 @@ variable "multiple_az" {
 variable "access_key" {
   description = "Access key to AWS console"
 }
+
 variable "secret_key" {
   description = "Secret key to AWS console"
 

@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "backup_bucket" {
-  bucket = format("%s-backup-bucket", var.cluster_name)
+  bucket = format("%s-backup", var.cluster_name)
   acl    = "private"
 
   tags = {

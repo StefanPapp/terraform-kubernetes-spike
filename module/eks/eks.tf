@@ -1,9 +1,9 @@
-resource "aws_eks_cluster" "splice_infra" {
-  name     = "splice-infra"
+resource "aws_eks_cluster" "kube_infra" {
+  name     = "kube-infra"
   role_arn = aws_iam_role.eks.arn
 
   vpc_config {
-    subnet_ids              = [var.subnet_cidr_blocks[0], var.subnet_cidr_blocks[1]]
+    subnet_ids              = [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
     endpoint_private_access = true
     endpoint_public_access  = true
   }
@@ -21,19 +21,19 @@ resource "aws_eks_cluster" "splice_infra" {
 }
 
 output "endpoint" {
-  value = aws_eks_cluster.splice_infra.endpoint
+  value = aws_eks_cluster.kube_infra.endpoint
 }
 
 output "kubeconfig-certificate-authority-data" {
-  value = aws_eks_cluster.splice_infra.certificate_authority[0].data
+  value = aws_eks_cluster.kube_infra.certificate_authority[0].data
 }
 
 resource "aws_eks_node_group" "core" {
-  cluster_name    = aws_eks_cluster.splice_infra.name
+  cluster_name    = aws_eks_cluster.kube_infra.name
   node_group_name = format("%s-core", var.cluster_name)
   node_role_arn   = aws_iam_role.eks_node_role.arn
   # subnet_ids      = aws_subnet.example[*].id
-  subnet_ids = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+  subnet_ids = [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
   # multple_az
   labels = {
     components = "core"
@@ -68,11 +68,11 @@ resource "aws_eks_node_group" "core" {
 }
 
 resource "aws_eks_node_group" "db" {
-  cluster_name    = aws_eks_cluster.splice_infra.name
+  cluster_name    = aws_eks_cluster.kube_infra.name
   node_group_name = format("%s-db", var.cluster_name)
   node_role_arn   =  aws_iam_role.eks_node_role.arn
   # subnet_ids      = aws_subnet.example[*].id
-  subnet_ids = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+  subnet_ids = [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
   labels = {
     components = "db"
   }
@@ -106,10 +106,10 @@ resource "aws_eks_node_group" "db" {
 }
 
 resource "aws_eks_node_group" "meta" {
-  cluster_name    = aws_eks_cluster.splice_infra.name
+  cluster_name    = aws_eks_cluster.kube_infra.name
   node_group_name = format("%s-meta", var.cluster_name)
   node_role_arn   = aws_iam_role.eks_node_role.arn
-  subnet_ids      =  ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+  subnet_ids = [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
   # multple_az
   labels = {
     components = "meta"

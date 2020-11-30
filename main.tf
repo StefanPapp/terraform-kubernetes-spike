@@ -20,15 +20,7 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
 }
 
 provider "aws" {
-  region = "eu-central-1"
-}
-
-module "vpc" {
-  source       = "./module/vpc"
-  cluster_name = var.cluster_name
-  tag_account  = var.tag_account
-  tag_creator  = var.tag_creator
-  run_date     = var.run_date
+  region = var.region
 }
 
 module "s3" {
@@ -36,20 +28,20 @@ module "s3" {
   cluster_name = var.cluster_name
   tag_account  = var.tag_account
   tag_creator  = var.tag_creator
-  run_date     = var.run_date
+  run_date     = timestamp()
 }
 module "Sagemaker" {
   source       = "./module/sagemaker"
   cluster_name = var.cluster_name
   tag_account  = var.tag_account
   tag_creator  = var.tag_creator
-  run_date     = var.run_date
+  run_date     = timestamp()
 }
 module "Eks" {
   source             = "./module/eks"
   cluster_name       = var.cluster_name
   tag_account        = var.tag_account
   tag_creator        = var.tag_creator
-  run_date           = var.run_date
+  run_date           = timestamp()
   subnet_cidr_blocks = var.subnet_cidr_blocks
 }
