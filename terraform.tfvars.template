@@ -1,0 +1,8 @@
+cluster_name = "terraformtest"
+tag_account = "Engineering"
+tag_creator = "Stefan Papp"
+region = "eu-central-1"
+cidr_block = "10.0.0.0/16"
+public = true
+access_key = "<add secret key here>"
+secret_key = "<add secret key here>"

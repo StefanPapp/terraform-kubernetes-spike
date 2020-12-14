@@ -30,13 +30,7 @@ module "s3" {
   tag_creator  = var.tag_creator
   run_date     = timestamp()
 }
-module "Sagemaker" {
-  source       = "./module/sagemaker"
-  cluster_name = var.cluster_name
-  tag_account  = var.tag_account
-  tag_creator  = var.tag_creator
-  run_date     = timestamp()
-}
+
 module "Eks" {
   source             = "./module/eks"
   cluster_name       = var.cluster_name

@@ -12,7 +12,11 @@ cluster_name = cluster name
 tag_account = department who created it
 tag_creator = you created the cluster
 region = aws region
-cidr_block = 
+cidr_block =
 public = true if public (private clusters need to be checked
 access_key = amazon key
 secret_key = Amazon secret key
+
+We have an empty template file terraform.tfvars.template. This can be renamed to terraform.tfvars and the parameters can be added there.
+
+Also use your own bucket in the main.tf line4
